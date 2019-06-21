@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 import Geocode from "react-geocode";
+import { GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 
 import CurrentLocation from '../Map/Map';
 
