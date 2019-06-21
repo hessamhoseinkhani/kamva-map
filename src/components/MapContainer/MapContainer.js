@@ -4,6 +4,8 @@ import { GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 
 import CurrentLocation from '../Map/Map';
 
+const googleApiKey = 'AIzaSyBnOC2cYnLyaaYXtnd_IEQWZLkqvg0tqoE';
+
 export class MapContainer extends Component {
   constructor(props) {
     super(props);
@@ -19,7 +21,7 @@ export class MapContainer extends Component {
   handleLocation = (currentLocation) => {
     console.log('ttt', process.env);
     // get the name of new location
-    Geocode.setApiKey("AIzaSyBnOC2cYnLyaaYXtnd_IEQWZLkqvg0tqoE");
+    Geocode.setApiKey(googleApiKey);
     // Enable or disable logs. Its optional.
     Geocode.enableDebug();
     // Get address from latidude & longitude.
@@ -72,6 +74,6 @@ export class MapContainer extends Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: 'AIzaSyBnOC2cYnLyaaYXtnd_IEQWZLkqvg0tqoE'
+  apiKey: googleApiKey
 })(MapContainer);
 
