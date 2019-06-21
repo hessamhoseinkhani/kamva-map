@@ -3,6 +3,7 @@ import Geocode from "react-geocode";
 import { GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 
 import CurrentLocation from '../Map/Map';
+import './MapContainer.css';
 
 const googleApiKey = 'AIzaSyBnOC2cYnLyaaYXtnd_IEQWZLkqvg0tqoE';
 
@@ -34,8 +35,8 @@ export class MapContainer extends Component {
         console.error(error);
       }
     );
-
   }
+
   onMarkerClick = (props, marker, e) =>
     this.setState({
       selectedPlace: props,
@@ -54,7 +55,7 @@ export class MapContainer extends Component {
 
   render() {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div className="container" >
         <h4>Your current location is : {this.state.currentLocation !== '' ? this.state.currentLocation : ''}</h4>
         <CurrentLocation centerAroundCurrentLocation google={this.props.google} location={this.handleLocation}>
           <Marker onClick={this.onMarkerClick} name={'current location'} />

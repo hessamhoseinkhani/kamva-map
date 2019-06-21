@@ -2,17 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 
-const mapStyles = {
-  map: {
-    position: 'absolute',
-    width: '50%',
-    height: '50%'
-  }
-};
 export class CurrentLocation extends React.Component {
   constructor(props) {
     super(props);
-
     const { lat, lng } = this.props.initialCenter;
     this.state = {
       currentLocation: {
@@ -53,12 +45,9 @@ export class CurrentLocation extends React.Component {
       // checks if google is available
       const { google } = this.props;
       const maps = google.maps;
-
       const mapRef = this.refs.map;
-
       // reference to the actual DOM element
       const node = ReactDOM.findDOMNode(mapRef);
-
       let { zoom } = this.props;
       const { lat, lng } = this.state.currentLocation;
       const center = new maps.LatLng(lat, lng);
@@ -77,9 +66,9 @@ export class CurrentLocation extends React.Component {
   recenterMap() {
     const map = this.map;
     const current = this.state.currentLocation;
-
     const google = this.props.google;
     const maps = google.maps;
+    // send Current data to parent component
     this.props.location(current);
 
     if (map) {
@@ -90,9 +79,7 @@ export class CurrentLocation extends React.Component {
 
   renderChildren() {
     const { children } = this.props;
-
     if (!children) return;
-
     return React.Children.map(children, c => {
       if (!c) return;
       return React.cloneElement(c, {
@@ -104,11 +91,9 @@ export class CurrentLocation extends React.Component {
   }
 
   render() {
-    const style = Object.assign({}, mapStyles.map);
-
     return (
       <div>
-        <div style={style} ref="map">
+        <div style={styles.map} ref="map">
           Loading map...
         </div>
         {this.renderChildren()}
@@ -117,6 +102,14 @@ export class CurrentLocation extends React.Component {
   }
 }
 export default CurrentLocation;
+
+const styles = {
+  map: {
+    position: 'absolute',
+    width: '50%',
+    height: '50%'
+  }
+};
 
 CurrentLocation.defaultProps = {
   zoom: 14,
