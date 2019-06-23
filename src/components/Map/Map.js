@@ -7,10 +7,7 @@ export class CurrentLocation extends React.Component {
     super(props);
     const { lat, lng } = this.props.initialCenter;
     this.state = {
-      currentLocation: {
-        lat: lat,
-        lng: lng
-      }
+      currentLocation: { lat, lng }
     };
   }
   componentDidMount() {
@@ -28,7 +25,6 @@ export class CurrentLocation extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.google !== this.props.google) {
       this.loadMap();
-
     }
     if (prevState.currentLocation !== this.state.currentLocation) {
       this.recenterMap();
@@ -46,12 +42,7 @@ export class CurrentLocation extends React.Component {
       let { zoom } = this.props;
       const { lat, lng } = this.state.currentLocation;
       const center = new maps.LatLng(lat, lng);
-      const mapConfig = Object.assign(
-        {},
-        {
-          center: center,
-          zoom: zoom
-        }
+      const mapConfig = Object.assign({}, { center: center, zoom: zoom }
       );
       // maps.Map() is constructor that instantiates the map
       this.map = new maps.Map(node, mapConfig);
@@ -96,8 +87,6 @@ export class CurrentLocation extends React.Component {
     );
   }
 }
-export default CurrentLocation;
-
 const styles = {
   map: {
     position: 'absolute',
@@ -115,4 +104,6 @@ CurrentLocation.defaultProps = {
   centerAroundCurrentLocation: false,
   visible: true
 };
+export default CurrentLocation;
+
 
