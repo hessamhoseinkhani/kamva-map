@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Geocode from "react-geocode";
 import { GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
+import Geocode from "react-geocode";
 
 import CurrentLocation from '../Map/Map';
 import './MapContainer.css';
@@ -17,19 +17,16 @@ export class MapContainer extends Component {
       currentLocation: ''
     };
     this.handleLocation = this.handleLocation.bind(this);
+    this.showcurrentLocation = this.showcurrentLocation.bind(this);
+
   }
 
-  handleLocation = (currentLocation) => {
-    console.log('ttt', process.env);
-    // get the name of new location
-    Geocode.setApiKey(googleApiKey);
-    // Enable or disable logs. Its optional.
-    Geocode.enableDebug();
-    // Get address from latidude & longitude.
-    Geocode.fromLatLng(currentLocation.lat, currentLocation.lng).then(
+  handleLocation = (GeoLocationCode) => {
+    Geocode.setApiKey(googleApiKey)
+    Geocode.fromLatLng(GeoLocationCode.lat, GeoLocationCode.lng).then(
       response => {
-        const address = response.results[0].formatted_address;
-        this.setState({ currentLocation: address });
+        const currentLocation = response.results[0].formatted_address;
+        this.setState({ currentLocation });
       },
       error => {
         console.error(error);
@@ -37,36 +34,27 @@ export class MapContainer extends Component {
     );
   }
 
-  onMarkerClick = (props, marker, e) =>
-    this.setState({
-      selectedPlace: props,
-      activeMarker: marker,
-      showingInfoWindow: true
-    });
+  onMarkerClick = (selectedPlace, activeMarker) =>
+    this.setState({ selectedPlace, activeMarker, showingInfoWindow: true });
 
   onClose = props => {
     if (this.state.showingInfoWindow) {
-      this.setState({
-        showingInfoWindow: false,
-        activeMarker: null
-      });
+      this.setState({ showingInfoWindow: false, activeMarker: null });
     }
   };
+  showcurrentLocation = currentLocation => {
+    return (<h4>Your current location is : {currentLocation !== '' ? currentLocation : ''}</h4>);
+  }
 
   render() {
+    const { currentLocation, activeMarker, showingInfoWindow } = this.state;
     return (
       <div className="container" >
-        <h4>Your current location is : {this.state.currentLocation !== '' ? this.state.currentLocation : ''}</h4>
+        {this.showcurrentLocation(currentLocation)}
         <CurrentLocation centerAroundCurrentLocation google={this.props.google} location={this.handleLocation}>
           <Marker onClick={this.onMarkerClick} name={'current location'} />
-          <InfoWindow
-            marker={this.state.activeMarker}
-            visible={this.state.showingInfoWindow}
-            onClose={this.onClose}
-          >
-            <div>
-              <h4>{this.state.selectedPlace.name}</h4>
-            </div>
+          <InfoWindow marker={activeMarker} visible={showingInfoWindow} onClose={this.onClose}>
+            {this.showcurrentLocation(currentLocation)}
           </InfoWindow>
         </CurrentLocation>
       </div>
@@ -77,4 +65,3 @@ export class MapContainer extends Component {
 export default GoogleApiWrapper({
   apiKey: googleApiKey
 })(MapContainer);
-
